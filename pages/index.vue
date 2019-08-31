@@ -24,18 +24,18 @@
 </template>
 
 <script>
-import AppLogo from '~/components/AppLogo.vue'
+import { mapGetters } from 'vuex';
 
 export default {
-  async asyncData({ app }) {
-    const items = await app.$axios.$get('http://qiita.com/api/v2/items?query=tag:nuxt.js');
-    return  {
-      items
+  async asyncData({ store }) {
+    if (store.getters['items'].length) {
+      return
     }
+    await store.dispatch('fetchItems');
   },
-  components: {
-    AppLogo
-  }
+  computed: {
+    ...mapGetters(['items'])
+  },
 }
 </script>
 
